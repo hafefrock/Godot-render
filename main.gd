@@ -1,7 +1,7 @@
 extends Node2D
 # Membaca adegan dari file JSON lalu menggambarnya frame demi frame.
 # Dipanggil oleh render.sh:
-#   godot --path . --write-movie ... -- --scene=res://scene.json
+#   godot --path . --write-movie ... -- --scene=/path/adegan.json
 
 const DEFAULT_SCENE := "res://scene.json"
 
@@ -20,7 +20,16 @@ func _ready() -> void:
         push_error("Tidak bisa membuka file adegan: " + path)
         get_tree().quit(1)
         return
-    var parsed = JSON.parse_string(file.get_as_text())
+    var raw := file.get_as_text()
+    # Bersihkan sisa format dari AI: pagar kode dan garis miring sebelum kurung siku.
+    raw = raw.replace("\\[", "[").replace("\\]", "]")
+    raw = raw.replace("```json", "").replace("```", "")
+    var json := JSON.new()
+    if json.parse(raw) != OK:
+        push_error("JSON tidak valid di baris %d: %s" % [json.get_error_line(), json.get_error_message()])
+        get_tree().quit(1)
+        return
+    var parsed = json.data
     if typeof(parsed) != TYPE_DICTIONARY:
         push_error("Isi JSON harus berupa objek { ... }")
         get_tree().quit(1)
@@ -31,13 +40,37 @@ func _ready() -> void:
         _build_item(item)
 
 
+func _load_texture(src: String) -> Texture2D:
+    if src == "":
+        return null
+    var path := src
+    if not src.begins_with("/"):
+        path = ProjectSettings.globalize_path("res://" + src.trim_prefix("res://"))
+    var img := Image.load_from_file(path)
+    if img == null or img.is_empty():
+        return null
+    return ImageTexture.create_from_image(img)
+
+
 func _build_item(item: Dictionary) -> void:
     var node: Control
-    if str(item.get("type", "text")) == "rect":
+    var kind := str(item.get("type", "text"))
+    if kind == "rect":
         var rect := ColorRect.new()
         rect.color = Color.html(str(item.get("color", "#ffffff")))
         rect.size = Vector2(float(item.get("w", 100)), float(item.get("h", 100)))
         node = rect
+    elif kind == "image":
+        var tex := _load_texture(str(item.get("src", "")))
+        if tex == null:
+            push_warning("Gambar tidak ditemukan, dilewati: " + str(item.get("src", "")))
+            return
+        var pic := TextureRect.new()
+        pic.texture = tex
+        pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+        pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+        pic.size = Vector2(float(item.get("w", 1280)), float(item.get("h", 720)))
+        node = pic
     else:
         var label := Label.new()
         label.text = str(item.get("text", ""))
@@ -68,6 +101,8 @@ func _build_item(item: Dictionary) -> void:
         "start": float(item.get("start", 0.0)),
         "end": float(item.get("end", duration)),
         "fade": float(item.get("fade", 0.3)),
+        "zoom_from": float(item.get("zoom_from", 1.0)),
+        "zoom_to": float(item.get("zoom_to", 1.0)),
     })
 
 
@@ -82,6 +117,9 @@ func _process(delta: float) -> void:
         var span: float = maxf(e["end"] - e["start"], 0.001)
         var t: float = clampf((time - e["start"]) / span, 0.0, 1.0)
         node.position = e["base"].lerp(e["to"], t)
+        if e["zoom_from"] != 1.0 or e["zoom_to"] != 1.0:
+            node.pivot_offset = node.size / 2.0
+            node.scale = Vector2.ONE * lerpf(e["zoom_from"], e["zoom_to"], t)
         var alpha := 1.0
         if e["fade"] > 0.0:
             alpha = minf((time - e["start"]) / e["fade"], (e["end"] - time) / e["fade"])

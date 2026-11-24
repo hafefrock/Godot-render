@@ -1,5 +1,7 @@
 .godot/
 frames/
+build/
 out.mp4
 godot
 godot.zip
+__pycache__/

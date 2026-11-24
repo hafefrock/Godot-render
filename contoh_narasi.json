@@ -1,0 +1,10 @@
+{
+  "language": "id",
+  "background": "#101A2B",
+  "items": [
+    { "type": "text", "text": "PERJALANAN KE BANDUNG", "x": 0, "y": 200, "w": 1280, "size": 72, "color": "#FFFFFF", "start": 0.3, "end": 4, "fade": 0.5, "to_y": 180 },
+    { "type": "text", "text": "Pagi itu kami berangkat sebelum matahari terbit.", "narrate": true, "x": 80, "y": 600, "w": 1120, "size": 52, "color": "#FFD400", "fade": 0.3, "to_y": 585 },
+    { "type": "text", "text": "Jalanan masih sepi dan udara terasa dingin.", "narrate": true, "x": 80, "y": 600, "w": 1120, "size": 52, "color": "#FFD400", "fade": 0.3, "to_y": 585 },
+    { "type": "text", "text": "Di tengah perjalanan, kami berhenti minum kopi.", "narrate": true, "x": 80, "y": 600, "w": 1120, "size": 52, "color": "#FFD400", "fade": 0.3, "to_y": 585 }
+  ]
+}
