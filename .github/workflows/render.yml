@@ -3,8 +3,19 @@ name: Render video
 on:
   workflow_dispatch:
     inputs:
+      story:
+        description: "Cerita (kosongkan untuk memakai file adegan di repo)"
+        required: false
+        default: ""
+      narration:
+        description: "Suara narasi"
+        type: choice
+        options:
+          - "ya"
+          - "tidak"
+        default: "ya"
       scene:
-        description: "Lokasi adegan JSON"
+        description: "File adegan (dipakai jika cerita kosong)"
         default: "res://scene.json"
 
 env:
@@ -13,16 +24,22 @@ env:
 jobs:
   render:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Pasang Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
       - name: Pasang kebutuhan
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb ffmpeg unzip libgl1-mesa-dri libglx-mesa0 \
             libxcursor1 libxinerama1 libxi6 libxrandr2 libfontconfig1
+          python -m pip install edge-tts
 
       - name: Unduh Godot
         run: |
@@ -34,10 +51,23 @@ jobs:
       - name: Render
         env:
           GODOT: ${{ github.workspace }}/godot
-        run: bash render.sh "${{ inputs.scene }}" out.mp4
+          STORY: ${{ inputs.story }}
+          NARRATION: ${{ inputs.narration }}
+          SCENE_INPUT: ${{ inputs.scene }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: bash render.sh "$SCENE_INPUT" out.mp4
 
-      - name: Unggah hasil
+      - name: Unggah video
         uses: actions/upload-artifact@v4
         with:
           name: video
           path: out.mp4
+
+      - name: Unggah adegan hasil (untuk disimpan)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adegan
+          path: build/scene*.json
+          if-no-files-found: ignore
