@@ -1,1 +1,43 @@
+name: Render video
 
+on:
+  workflow_dispatch:
+    inputs:
+      scene:
+        description: "Lokasi adegan JSON"
+        default: "res://scene.json"
+
+env:
+  GODOT_VERSION: "4.4.1-stable"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Pasang kebutuhan
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb ffmpeg unzip libgl1-mesa-dri libglx-mesa0 \
+            libxcursor1 libxinerama1 libxi6 libxrandr2 libfontconfig1
+
+      - name: Unduh Godot
+        run: |
+          curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip"
+          unzip -q godot.zip
+          mv "Godot_v${GODOT_VERSION}_linux.x86_64" godot
+          chmod +x godot
+
+      - name: Render
+        env:
+          GODOT: ${{ github.workspace }}/godot
+        run: bash render.sh "${{ inputs.scene }}" out.mp4
+
+      - name: Unggah hasil
+        uses: actions/upload-artifact@v4
+        with:
+          name: video
+          path: out.mp4
