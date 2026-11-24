@@ -1,0 +1,9 @@
+{
+  "duration": 6,
+  "background": "#101820",
+  "items": [
+    { "type": "rect", "x": 0, "y": 300, "w": 1280, "h": 6, "color": "#FFD400", "start": 0.2, "end": 5.8 },
+    { "type": "text", "text": "Perjalanan ke Bandung", "x": 0, "y": 200, "size": 72, "color": "#FFFFFF", "start": 0.3, "end": 5.5, "to_y": 170 },
+    { "type": "text", "text": "Hari pertama kami berangkat pagi-pagi", "x": 80, "y": 600, "w": 1120, "size": 52, "color": "#FFD400", "start": 1.5, "end": 5.5 }
+  ]
+}
