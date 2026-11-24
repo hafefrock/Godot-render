@@ -1,9 +1,2 @@
-{
-  "duration": 6,
-  "background": "#101820",
-  "items": [
-    { "type": "rect", "x": 0, "y": 300, "w": 1280, "h": 6, "color": "#FFD400", "start": 0.2, "end": 5.8 },
-    { "type": "text", "text": "Perjalanan ke Bandung", "x": 0, "y": 200, "size": 72, "color": "#FFFFFF", "start": 0.3, "end": 5.5, "to_y": 170 },
-    { "type": "text", "text": "Hari pertama kami berangkat pagi-pagi", "x": 80, "y": 600, "w": 1120, "size": 52, "color": "#FFD400", "start": 1.5, "end": 5.5 }
-  ]
-}
+{ "duration": 28, "background": "#101A2B", "items": \[ { "type": "text", "text": "TIME KEEPS MOVING", "x": 80, "y": 200, "w": 1120, "size": 72, "color": "#FFFFFF", "start": 0.3, "end": 4.5, "fade": 0.5, "to_y": 180 }, { "type": "text", "text": "The world never stops.", "x": 80, "y": 600, "w": 1120, "size": 52, "color": "#FFD400", "start": 0.5, "end": 4, "fade": 0.3, "to_y": 585 }, { "type": "text", "text": "Days keep passing.", "x": 80, "y": 600, "w": 1120, "size": 52, "color": "#FFD400", "start": 4.2, "end": 8, "fade": 0.3, "to_y": 585 }, { "type": "text", "text": "In the middle of time that keeps moving...", "x": 80, "y": 600, "w": 1120, "size": 52, "color": "#FFD400", "start": 8.2, "end": 12, "fade": 0.3, "to_y": 585 }, { "type": "text", "text": "Should I keep moving too?", "x": 80, "y": 600, "w": 1120, "size": 52, "color": "#FFD400", "start": 12.2, "end": 16, "fade": 0.3, "to_y": 585 }, { "type": "text", "text": "A new year will come, but will my life still be the same?", "x": 80, "y": 600, "w": 1120, "size": 52, "color": "#FFD400", "start": 16.2, "end": 20.5, "fade": 0.3, "to_y": 585 }, { "type": "text", "text": "Before 2027 begins, what will I do differently?", "x": 80, "y": 600, "w": 1120, "size": 52, "color": "#FFD400", "start": 20.7, "end": 24.5, "fade": 0.3, "to_y": 585 }, { "type": "text", "text": "I need a reason to make this year different.", "x": 80, "y": 600, "w": 1120, "size": 52, "color": "#FFD400", "start": 24.7, "end": 28, "fade": 0.3, "to_y": 585 } \] }
+
