@@ -25,3 +25,15 @@ Setelah hijau, unduh artifact **video** (zip berisi `out.mp4`). Artifact **adega
   - `type: image`: `src` (mis. `assets/latar.jpg`, simpan di repo), `w`, `h` (bawaan 1280x720, mengisi penuh tanpa gepeng).
 
 Ukuran video tetap 1280x720, 30 FPS.
+
+## Tab Video di editor Godot (versi 0.1)
+Folder `addons/video_tab` menambah tab **Video** di editor Godot (di sebelah 2D, 3D, Script).
+Isinya: daftar item, timeline (geser batang untuk memindah waktu), formulir ubah teks, waktu, posisi, ukuran, warna, lalu **Simpan** (ke `scene.json`) atau **Salin JSON** (untuk ditempel di GitHub).
+
+Cara memakai di HP:
+1. Di repo ini tekan **Code > Download ZIP**, lalu ekstrak di HP.
+2. Di editor Godot (APK) tekan **Import**, pilih folder hasil ekstrak (file `project.godot`).
+3. Kalau muncul tawaran mengonversi proyek, setujui.
+4. Cari tab **Video** di bagian atas. Kalau tidak ada: **Project > Project Settings > Plugins**, centang **Video**.
+
+Belum ada: pratinjau, tombol kirim ke GitHub, dan tombol render. Semuanya menyusul.
